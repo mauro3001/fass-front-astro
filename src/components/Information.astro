@@ -1,0 +1,104 @@
+---
+import { getUserByUserName } from "../services/apiService";
+// Function to fetch user data by username
+interface Props {
+    username: string;
+}
+
+const { username } = Astro.props;
+
+const userData = await getUserByUserName(username);
+---
+
+<div class="max-w-lg bg-white border border-gray-200 rounded-lg shadow md:max-w-3xl lg:max-w-5xl dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+        <img
+            class="max-h-[400px] w-full rounded-t-lg object-contain"
+            src={userData?.imageUrl ? userData?.imageUrl : "https://midu.dev/images/this-is-fine-404.gif"}
+            alt=""
+        />
+    </a>
+    <div class="p-5">
+        <a href="#">
+            <h5 class="text-center mb-5 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                {userData?.name ? userData.name : "Usuario no Existente"}
+            </h5>
+        </a>
+        <p class="mb-5 text-3xl font-semibold text-gray-700 dark:text-gray-400">
+            Usuario: {userData?.user ? userData.user : "Sin usuario"}
+        </p>
+
+        {
+            userData?.moraCuota ? (
+                <p class="mb-3 text-center text-2xl font-semibold text-gray-700 dark:text-gray-400">
+                    El usuario esta en mora de CUOTA:
+                    {userData?.moraCuota === "si" ? (
+                        <div class="flex justify-center items-center">
+                            <h2 class="mb-3 font-bold text-3xl text-green-700 dark:text-green-400">SI</h2>
+                            <svg
+                                class="w-20 h-20 text-green-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                    ) : (
+                        <div class="flex justify-center items-center">
+                            <p class="mb-3 font-bold text-3xl text-red-700 dark:text-red-400">NO</p>
+                            <svg
+                                class="w-20 h-20 text-red-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                    )}
+                </p>
+            ) : (
+                <p class="mb-3 text-normal font-semibold text-gray-700 dark:text-gray-400">No existe el usuario</p>
+            )
+        }
+        {
+            userData?.moraDeuda ? (
+                <p class="mb-3 text-center text-2xl font-semibold text-gray-700 dark:text-gray-400">
+                    El usuario esta en mora de DEUDA:
+                    {userData?.moraDeuda === "si" ? (
+                        <div class="flex justify-center items-center">
+                            <h2 class="mb-3 font-bold text-3xl text-green-700 dark:text-green-400">SI</h2>
+                            <svg
+                                class="w-20 h-20 text-green-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                    ) : (
+                        <div class="flex justify-center items-center">
+                            <p class="mb-3 font-bold text-3xl text-red-700 dark:text-red-400">NO</p>
+                            <svg
+                                class="w-20 h-20 text-red-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                    )}
+                </p>
+            ) : (
+                <p class="mb-3 text-normal font-semibold text-gray-700 dark:text-gray-400">No existe informacion</p>
+            )
+        }
+    </div>
+</div>
