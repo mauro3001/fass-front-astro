@@ -3,18 +3,16 @@ import Layout from "../layouts/Layout.astro";
 import { getUserByUserName } from "../services/apiService";
 //get username from cookies
 const { id } = Astro.params;
-console.log(id);
 let userData;
 if (id) {
     userData = await getUserByUserName(id);
-    console.log(userData);
 }
 ---
 
 <Layout title="Welcome to Astro.">
-    <main class="min-h-screen min-w-full flex items-center justify-center">
+    <main class="min-h-screen min-w-full flex flex-col gap-10 items-center justify-center">
         <div
-            class="max-w-lg bg-white border border-gray-200 rounded-lg shadow md:max-w-3xl lg:max-w-5xl dark:bg-gray-800 dark:border-gray-700"
+            class="max-w-xs bg-white border border-gray-200 rounded-lg shadow md:max-w-2xl lg:max-w-4xl dark:bg-gray-800 dark:border-gray-700"
         >
             <a href="#">
                 <img
@@ -107,5 +105,35 @@ if (id) {
                 }
             </div>
         </div>
+        <div class="flex justify-center">
+            <button
+                type="button"
+                id="closeButton"
+                class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            >
+                Salir
+            </button>
+        </div>
     </main>
 </Layout>
+<script>
+    //get infomration of username from localstorage and compare with id
+    if (typeof window !== "undefined") {
+        const username = localStorage.getItem("user");
+        //get id from url and compare with information of localstorage
+        const pathId = window.location.pathname.split("/").pop();
+        if (!username || username !== pathId) {
+            window.location.href = `/`;
+        }
+    }
+
+    //logout with event listener
+    const button = document.getElementById("closeButton");
+    if (button) {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            localStorage.removeItem("user");
+            window.location.href = `/`;
+        });
+    }
+</script>
